@@ -1,2 +1,2 @@
 # Qt-client-gui
-Client app.
+Client app example.
