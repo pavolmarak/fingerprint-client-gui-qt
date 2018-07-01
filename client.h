@@ -1,5 +1,5 @@
-#ifndef DBOXCLIENT_H
-#define DBOXCLIENT_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
 #include <QMainWindow>
 #include <QObject>
@@ -13,16 +13,16 @@
 #include "opencv2/highgui.hpp"
 
 namespace Ui {
-class DboxClient;
+class Client;
 }
 
-class DboxClient : public QMainWindow
+class Client : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit DboxClient(QWidget *parent = 0);
-    ~DboxClient();
+    explicit Client(QWidget *parent = 0);
+    ~Client();
 
 public slots:
     void connectedSlot();
@@ -35,8 +35,8 @@ private slots:
     void on_connect_button_clicked();
 
 private:
-    Ui::DboxClient *ui;
+    Ui::Client *ui;
     QTcpSocket socket;
 };
 
-#endif // DBOXCLIENT_H
+#endif // CLIENT_H

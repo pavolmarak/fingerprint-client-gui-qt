@@ -39,7 +39,7 @@ INCLUDEPATH += /usr/local/include/suprema
 DEPENDPATH += /usr/local/include/suprema
 
 #OpenCV 4.0.0-pre
-unix:!macx: LIBS += -L/usr/local/lib/ -lopencv_world
+unix:!macx: LIBS += -L/usr/local/lib64/ -lopencv_world
 INCLUDEPATH += /usr/local/include
 DEPENDPATH += /usr/local/include
 

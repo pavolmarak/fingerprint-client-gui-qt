@@ -1,9 +1,9 @@
-#include "dboxclient.h"
-#include "ui_dboxclient.h"
+#include "client.h"
+#include "ui_client.h"
 
-DboxClient::DboxClient(QWidget *parent) :
+Client::Client(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::DboxClient)
+    ui(new Ui::Client)
 {
     ui->setupUi(this);
     QObject::connect(&(this->socket), SIGNAL(connected()), this, SLOT(connectedSlot()));
@@ -13,17 +13,17 @@ DboxClient::DboxClient(QWidget *parent) :
     QObject::connect(&(this->socket), SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(changedSlot(QAbstractSocket::SocketState)));
 }
 
-DboxClient::~DboxClient()
+Client::~Client()
 {
     delete ui;
 }
 
-void DboxClient::on_connect_button_clicked()
+void Client::on_connect_button_clicked()
 {
     this->socket.connectToHost(QHostAddress(ui->remote_ip->text()),ui->remote_port->text().toUInt());
 }
 
-void DboxClient::connectedSlot()
+void Client::connectedSlot()
 {
     qDebug() << "Connection established to " << this->socket.peerAddress().toString();
     ui->statusBar->showMessage("Connection established to " + this->socket.peerAddress().toString());
@@ -67,25 +67,25 @@ void DboxClient::connectedSlot()
 
 }
 
-void DboxClient::readSlot()
+void Client::readSlot()
 {
     QByteArray message = this->socket.readAll();
     qDebug() << "Message from server: " << message;
 }
 
-void DboxClient::errorSlot(QAbstractSocket::SocketError error)
+void Client::errorSlot(QAbstractSocket::SocketError error)
 {
     qDebug() << this->socket.errorString();
     ui->statusBar->showMessage(this->socket.errorString());
 }
 
-void DboxClient::disconnectedSlot()
+void Client::disconnectedSlot()
 {
     qDebug() << "Disconnected from server.";
     ui->statusBar->showMessage("Disconnected from server.");
 }
 
-void DboxClient::changedSlot(QAbstractSocket::SocketState)
+void Client::changedSlot(QAbstractSocket::SocketState)
 {
     qDebug() << "State changed.";
     ui->statusBar->showMessage("State changed.");
