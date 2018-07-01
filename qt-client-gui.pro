@@ -33,13 +33,23 @@ HEADERS += \
 FORMS += \
         client.ui
 
+QMAKE_CFLAGS_ISYSTEM=
+
 #Suprema scanner
 unix:!macx: LIBS += -L/usr/local/lib/ -lUFScanner
+unix:!macx: LIBS += -L/usr/local/lib64/ -lUFScanner
 INCLUDEPATH += /usr/local/include/suprema
 DEPENDPATH += /usr/local/include/suprema
+INCLUDEPATH += /usr/local/include
+DEPENDPATH += /usr/local/include
 
 #OpenCV 4.0.0-pre
 unix:!macx: LIBS += -L/usr/local/lib64/ -lopencv_world
+unix:!macx: LIBS += -L/usr/local/lib/ -lopencv_world
+unix:!macx: LIBS += -L/usr/lib -lopencv_world
+unix:!macx: LIBS += -L/usr/lib/x86_64-linux-gnu -lopencv_world
 INCLUDEPATH += /usr/local/include
 DEPENDPATH += /usr/local/include
+INCLUDEPATH += /usr/include
+DEPENDPATH += /usr/include
 
