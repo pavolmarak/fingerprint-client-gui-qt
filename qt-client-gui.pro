@@ -8,7 +8,7 @@ QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = dbox-client-gui
+TARGET = qt-client-gui
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -25,13 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        dboxclient.cpp
+        client.cpp
 
 HEADERS += \
-        dboxclient.h
+        client.h
 
 FORMS += \
-        dboxclient.ui
+        client.ui
 
 #Suprema scanner
 unix:!macx: LIBS += -L/usr/local/lib/ -lUFScanner
