@@ -1,2 +1,2 @@
-# dbox-client-gui
-Client app for DBOX
+# Qt-client-gui
+Client app.
