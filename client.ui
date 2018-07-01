@@ -67,7 +67,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>147.175.106.8</string>
+                <string>127.0.0.1</string>
                </property>
                <property name="placeholderText">
                 <string>147.175.106.8</string>
