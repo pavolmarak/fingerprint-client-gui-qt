@@ -34,12 +34,12 @@ FORMS += \
         dboxclient.ui
 
 #Suprema scanner
-unix:!macx: LIBS += -L$$PWD/../../../../usr/local/lib/ -lUFScanner
-INCLUDEPATH += $$PWD/../../../../usr/local/include/suprema
-DEPENDPATH += $$PWD/../../../../usr/local/include/suprema
+unix:!macx: LIBS += -L/usr/local/lib/ -lUFScanner
+INCLUDEPATH += /usr/local/include/suprema
+DEPENDPATH += /usr/local/include/suprema
 
 #OpenCV 4.0.0-pre
-unix:!macx: LIBS += -L$$PWD/../../../../usr/local/lib/ -lopencv_world
-INCLUDEPATH += $$PWD/../../../../usr/local/include
-DEPENDPATH += $$PWD/../../../../usr/local/include
+unix:!macx: LIBS += -L/usr/local/lib/ -lopencv_world
+INCLUDEPATH += /usr/local/include
+DEPENDPATH += /usr/local/include
 
