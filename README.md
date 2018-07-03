@@ -1,2 +1,2 @@
 # Qt-client-gui
-Client app example.
+This repository houses source code for an experimental client app communicating with server over TCP, written in Qt. 
