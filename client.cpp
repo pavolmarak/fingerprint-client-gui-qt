@@ -27,6 +27,10 @@ void Client::connectedSlot()
 {
     qDebug() << "Connection established to " << this->socket.peerAddress().toString();
     ui->statusBar->showMessage("Connection established to " + this->socket.peerAddress().toString());
+    ui->local_ip->setText(this->socket.localAddress().toString());
+    ui->local_port->setText(QString::number(this->socket.localPort()));
+    ui->local_socket->setText(QString::number(this->socket.socketDescriptor()));
+
     this->socket.write("Hello from client");
 
 // ***** SENSOR PART *****
@@ -83,10 +87,18 @@ void Client::disconnectedSlot()
 {
     qDebug() << "Disconnected from server.";
     ui->statusBar->showMessage("Disconnected from server.");
+    ui->local_ip->setText("");
+    ui->local_port->setText("");
+    ui->local_socket->setText("");
 }
 
 void Client::changedSlot(QAbstractSocket::SocketState)
 {
     qDebug() << "State changed.";
     ui->statusBar->showMessage("State changed.");
+}
+
+void Client::on_disconnect_button_clicked()
+{
+    this->socket.disconnectFromHost();
 }
