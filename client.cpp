@@ -32,43 +32,6 @@ void Client::connectedSlot()
     ui->local_socket->setText(QString::number(this->socket.socketDescriptor()));
 
     this->socket.write("Hello from client");
-
-// ***** SENSOR PART *****
-
-//    UFS_STATUS result_op;
-//    result_op = UFS_Init();
-//    if(result_op == UFS_OK){
-//        qDebug() << "Scanner initialized.";
-//        int scannerID=0;
-//        HUFScanner hscanner;
-//        result_op = UFS_GetScannerHandle(scannerID,&hscanner);
-//        if(result_op == UFS_OK){
-//            qDebug() << "Scanner handle obtained.";
-//            result_op = UFS_CaptureSingleImage(hscanner);
-//            if(result_op == UFS_OK){
-//                qDebug() << "Image captured.";
-//                int pwidth, pheight, presolution;
-//                UFS_GetCaptureImageBufferInfo(hscanner,&pwidth,&pheight,&presolution);
-//                qDebug() << pwidth << " " << pheight;
-//                unsigned char * pdata = (unsigned char*)malloc(pwidth*pheight*sizeof(unsigned char));
-//                UFS_GetCaptureImageBuffer(hscanner, pdata);
-//                cv::Mat imgcv(pheight, pwidth, CV_8UC1, pdata, pwidth);
-//                cv::imwrite("fingerprint.png",imgcv);
-//                UFS_Uninit();
-//            }
-//            else{
-//                qWarning() << "Image capturing failed.";
-//            }
-//        }
-//        else{
-//            qWarning() << "Scanner handle retrieval failed.";
-//        }
-
-//    }
-//    else{
-//        qWarning() << "Scanner is not initialized";
-//    }
-
 }
 
 void Client::readSlot()
@@ -104,4 +67,55 @@ void Client::on_disconnect_button_clicked()
         this->socket.disconnectFromHost();
     }
 
+}
+
+void Client::on_suprema_scan_button_clicked()
+{
+    if(this->socket.state()!=QTcpSocket::ConnectedState){
+        qWarning() << "No TCP connection to server.";
+        ui->suprema_log->append("No TCP connection to server.");
+        return;
+    }
+    // ***** SENSOR PART *****
+
+        UFS_STATUS result_op;
+        char* errStr = (char*)calloc(1000,sizeof(char));
+        result_op = UFS_Init();
+        if(result_op == UFS_OK){
+            qDebug() << "Scanner initialized.";
+            int scannerID=0;
+            HUFScanner hscanner;
+            result_op = UFS_GetScannerHandle(scannerID,&hscanner);
+            if(result_op == UFS_OK){
+                qDebug() << "Scanner handle obtained.";
+                result_op = UFS_CaptureSingleImage(hscanner);
+                if(result_op == UFS_OK){
+                    qDebug() << "Image captured.";
+                    int pwidth, pheight, presolution;
+                    UFS_GetCaptureImageBufferInfo(hscanner,&pwidth,&pheight,&presolution);
+                    qDebug() << pwidth << " " << pheight;
+                    unsigned char * pdata = (unsigned char*)malloc(pwidth*pheight*sizeof(unsigned char));
+                    UFS_GetCaptureImageBuffer(hscanner, pdata);
+                    cv::Mat imgcv(pheight, pwidth, CV_8UC1, pdata, pwidth);
+                    cv::imwrite("fingerprint.png",imgcv);
+                    QImage fing_img(pdata,pwidth,pheight,QImage::Format_Grayscale8);
+                    ui->suprema_fingerprint_img->setPixmap(QPixmap::fromImage(fing_img));
+                    this->socket.write((const char*)pdata, pwidth*pheight*sizeof(unsigned char));
+                }
+                else{
+                    UFS_GetErrorString(result_op,errStr);
+                    qWarning() << errStr;
+                }
+            }
+            else{
+                UFS_GetErrorString(result_op,errStr);
+                qWarning() << errStr;
+            }
+            UFS_Uninit();
+        }
+        else{
+            UFS_GetErrorString(result_op,errStr);
+            qWarning() << errStr;
+        }
+        free(errStr);
 }

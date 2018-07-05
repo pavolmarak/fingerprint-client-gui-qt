@@ -36,6 +36,8 @@ private slots:
 
     void on_disconnect_button_clicked();
 
+    void on_suprema_scan_button_clicked();
+
 private:
     Ui::Client *ui;
     QTcpSocket socket;
