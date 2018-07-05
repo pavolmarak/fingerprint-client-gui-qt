@@ -100,5 +100,8 @@ void Client::changedSlot(QAbstractSocket::SocketState)
 
 void Client::on_disconnect_button_clicked()
 {
-    this->socket.disconnectFromHost();
+    if(this->socket.state() == QTcpSocket::ConnectedState){
+        this->socket.disconnectFromHost();
+    }
+
 }
