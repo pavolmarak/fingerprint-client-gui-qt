@@ -30,8 +30,6 @@ void Client::connectedSlot()
     ui->local_ip->setText(this->socket.localAddress().toString());
     ui->local_port->setText(QString::number(this->socket.localPort()));
     ui->local_socket->setText(QString::number(this->socket.socketDescriptor()));
-
-    this->socket.write("Hello from client");
 }
 
 void Client::readSlot()
@@ -78,44 +76,56 @@ void Client::on_suprema_scan_button_clicked()
     }
     // ***** SENSOR PART *****
 
-        UFS_STATUS result_op;
-        char* errStr = (char*)calloc(1000,sizeof(char));
-        result_op = UFS_Init();
+    ui->suprema_fingerprint_img->setText("Put your finger on the scanner.");
+    ui->suprema_fingerprint_img->setAlignment(Qt::AlignCenter);
+    qApp->processEvents();
+    UFS_STATUS result_op;
+    char* errStr = (char*)calloc(1000,sizeof(char));
+    result_op = UFS_Init();
+    if(result_op == UFS_OK){
+        qDebug() << "Scanner initialized.";
+        int scannerID=0;
+        HUFScanner hscanner;
+        result_op = UFS_GetScannerHandle(scannerID,&hscanner);
         if(result_op == UFS_OK){
-            qDebug() << "Scanner initialized.";
-            int scannerID=0;
-            HUFScanner hscanner;
-            result_op = UFS_GetScannerHandle(scannerID,&hscanner);
+            qDebug() << "Scanner handle obtained.";
+            result_op = UFS_CaptureSingleImage(hscanner);
             if(result_op == UFS_OK){
-                qDebug() << "Scanner handle obtained.";
-                result_op = UFS_CaptureSingleImage(hscanner);
-                if(result_op == UFS_OK){
-                    qDebug() << "Image captured.";
-                    int pwidth, pheight, presolution;
-                    UFS_GetCaptureImageBufferInfo(hscanner,&pwidth,&pheight,&presolution);
-                    qDebug() << pwidth << " " << pheight;
-                    unsigned char * pdata = (unsigned char*)malloc(pwidth*pheight*sizeof(unsigned char));
-                    UFS_GetCaptureImageBuffer(hscanner, pdata);
-                    cv::Mat imgcv(pheight, pwidth, CV_8UC1, pdata, pwidth);
-                    cv::imwrite("fingerprint.png",imgcv);
-                    QImage fing_img(pdata,pwidth,pheight,QImage::Format_Grayscale8);
-                    ui->suprema_fingerprint_img->setPixmap(QPixmap::fromImage(fing_img));
-                    this->socket.write((const char*)pdata, pwidth*pheight*sizeof(unsigned char));
-                }
-                else{
-                    UFS_GetErrorString(result_op,errStr);
-                    qWarning() << errStr;
-                }
+                qDebug() << "Image captured.";
+                int pwidth, pheight, presolution;
+                UFS_GetCaptureImageBufferInfo(hscanner,&pwidth,&pheight,&presolution);
+                qDebug() << pwidth << " " << pheight;
+                unsigned char * pdata = (unsigned char*)malloc(pwidth*pheight*sizeof(unsigned char));
+                UFS_GetCaptureImageBuffer(hscanner, pdata);
+                QImage fing_img(pdata,pwidth,pheight,QImage::Format_Grayscale8);
+                ui->suprema_fingerprint_img->setPixmap(QPixmap::fromImage(fing_img));
+                this->socket.write((const char*)pdata, pwidth*pheight*sizeof(unsigned char));
+                free(pdata);
+                ui->save_image_button->setEnabled(true);
+                ui->suprema_log->append("Last scan: "
+                                        + QDateTime::currentDateTime().toString("dd. MMM. yyyy")
+                                        + ", "
+                                        + QDateTime::currentDateTime().time().toString());
             }
             else{
                 UFS_GetErrorString(result_op,errStr);
                 qWarning() << errStr;
             }
-            UFS_Uninit();
         }
         else{
             UFS_GetErrorString(result_op,errStr);
             qWarning() << errStr;
         }
-        free(errStr);
+        UFS_Uninit();
+    }
+    else{
+        UFS_GetErrorString(result_op,errStr);
+        qWarning() << errStr;
+    }
+    free(errStr);
+}
+
+void Client::on_save_image_button_clicked()
+{
+    qDebug() << ui->suprema_fingerprint_img->grab().save(QFileDialog::getSaveFileName(nullptr,"Save image as"));
 }

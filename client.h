@@ -6,6 +6,9 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QDebug>
+#include <QFileDialog>
+#include <QDateTime>
+
 #include "UFScanner.h"
 #include "opencv2/world.hpp"
 #include "opencv2/core.hpp"
@@ -37,6 +40,8 @@ private slots:
     void on_disconnect_button_clicked();
 
     void on_suprema_scan_button_clicked();
+
+    void on_save_image_button_clicked();
 
 private:
     Ui::Client *ui;
