@@ -3,6 +3,6 @@ This repository houses source code for an experimental client app communicating 
 
 The app now supports scanning fingerprints and transferring them to the server.
 
-Here is the screenshot of the app's GUI.
+Here is the screenshot of the app's GUI running under Manjaro Linux with KDE Plasma desktop environment.
 
 ![client-app-gui](client_app.png)
