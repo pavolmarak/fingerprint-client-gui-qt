@@ -14,7 +14,7 @@ Here is the preview of the app's GUI running under Manjaro Linux with KDE Plasma
 
 ![client-app-gui](client_app.png)
 
-*What do you need to build this software?*
+**What do you need to build this software?**
 
 * Qt 5.11
 * OpenCV 3.4.2 or higher
