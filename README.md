@@ -18,4 +18,4 @@ Here is the preview of the app's GUI running under Manjaro Linux with KDE Plasma
 
 * Qt 5.11
 * OpenCV 3.4.2 or higher
-* Suprema BioMini fingerprint scanner and the corresponding BioMini SDK (only in case you want to use the scanner as image data source) 
+* Suprema BioMini fingerprint scanner and the corresponding driver and BioMini SDK (only in case you want to use the scanner as the source for image data) 
