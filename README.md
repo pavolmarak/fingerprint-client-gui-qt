@@ -13,3 +13,9 @@ These repositories were forked from [László Kádek's profile](https://github.c
 Here is the preview of the app's GUI running under Manjaro Linux with KDE Plasma desktop environment.
 
 ![client-app-gui](client_app.png)
+
+*What do you need to build this software?*
+
+* Qt 5.11
+* OpenCV 3.4.2 or higher
+* Suprema BioMini fingerprint scanner and the corresponding BioMini SDK (only in case you want to use the scanner as image data source) 
