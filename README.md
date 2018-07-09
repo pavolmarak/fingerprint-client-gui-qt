@@ -4,9 +4,10 @@ This repository houses source code for an experimental biometric client app comm
 From biometric point of view, the app supports scanning fingerprints and transferring them to the authentication server which then performs fingerprint recognition based on the open-source library with codename DBOX, developed by László Kádek and Pavol Marák in 2018. 
 
 The aforementioned DBOX library is composed of three main components (standalone shared libraries):
- * preprocessing ([here](https://github.com/stupel/Preprocessing))
- * 
+ * image preprocessing ([here](https://github.com/pavolmarak/Preprocessing))
+ * feature extraction ([here](https://github.com/pavolmarak/Extraction))
+ * feature matching ([here](https://github.com/pavolmarak/Matcher))
 
-Here is the screenshot of the app's GUI running under Manjaro Linux with KDE Plasma desktop environment.
+Here is the preview of the app's GUI running under Manjaro Linux with KDE Plasma desktop environment.
 
 ![client-app-gui](client_app.png)
