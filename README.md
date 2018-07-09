@@ -7,6 +7,8 @@ The aforementioned DBOX library is composed of three main components (standalone
  * image preprocessing ([here](https://github.com/pavolmarak/Preprocessing))
  * feature extraction ([here](https://github.com/pavolmarak/Extraction))
  * feature matching ([here](https://github.com/pavolmarak/Matcher))
+ 
+These repositories were forked from [László Kádek's profile](https://github.com/stupel)
 
 Here is the preview of the app's GUI running under Manjaro Linux with KDE Plasma desktop environment.
 
