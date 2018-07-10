@@ -26,6 +26,8 @@ class Client : public QMainWindow
 public:
     explicit Client(QWidget *parent = 0);
     ~Client();
+    bool scannerInit(HUFScanner& hscanner);
+    unsigned char *scannerCapture(int& width, int& height);
 
 public slots:
     void connectedSlot();
@@ -46,6 +48,7 @@ private slots:
 private:
     Ui::Client *ui;
     QTcpSocket socket;
+    HUFScanner hscanner;
 };
 
 #endif // CLIENT_H
