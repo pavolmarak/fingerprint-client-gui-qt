@@ -1,9 +1,9 @@
 # Qt GUI fingerprint client
 This repository houses source code for an experimental biometric client app communicating with authentication server over TCP, all written in Qt. The client app allows to choose IP and port of the server and connect to it. The app demonstrates the process of connecting, disconnecting and notifying about any state changes in TCP connection.
 
-From biometric point of view, the app supports scanning fingerprints and transferring them to the authentication server which then performs fingerprint recognition based on the open-source library with codename DBOX, developed by László Kádek and Pavol Marák in 2018. 
+From biometric point of view, the app supports scanning fingerprints (now only Suprema BioMini Slim is supported) and transferring them to the authentication server which then performs fingerprint recognition based on the open-source library with codename DBOX, developed by László Kádek and Pavol Marak in 2018. 
 
-The aforementioned DBOX library is composed of three main components (standalone shared libraries):
+The aforementioned DBOX library is composed of three main components (standalone shared libraries, available as GitHub repos):
  * image preprocessing ([here](https://github.com/pavolmarak/Preprocessing))
  * feature extraction ([here](https://github.com/pavolmarak/Extraction))
  * feature matching ([here](https://github.com/pavolmarak/Matcher))
