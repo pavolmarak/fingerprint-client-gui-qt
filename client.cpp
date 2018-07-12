@@ -80,8 +80,33 @@ void Client::on_suprema_scan_button_clicked()
     }
     int width, height;
     unsigned char* img_data = this->scannerCapture(width,height);
+    if(img_data == nullptr){
+        qDebug() << "Chyba snimaca";
+        return;
+    }
     QImage fing_img(img_data,width,height,QImage::Format_Grayscale8);
     ui->suprema_fingerprint_img->setPixmap(QPixmap::fromImage(fing_img));
+
+    /* Zistovanie velkosti obrazku */
+    QByteArray byteCount;
+    QByteArray imgWidth, imgHeight;
+
+    QDataStream dataStream1(&byteCount, QIODevice::WriteOnly);
+    QDataStream dataStream2(&imgWidth, QIODevice::WriteOnly);
+    QDataStream dataStream3(&imgHeight, QIODevice::WriteOnly);
+
+    quint32 bc = 153600+12;
+    quint32 iw = 320;
+    quint32 ih = 480;
+
+    dataStream1 << bc;
+    dataStream2 << iw;
+    dataStream3 << ih;
+
+    this->socket.write(byteCount);// pocet B
+    this->socket.write(imgWidth);// sirka
+    this->socket.write(imgHeight);// vyska
+
     this->socket.write((const char*)img_data,sizeof(unsigned char)*width*height);
     free(img_data);
     ui->save_image_button->setEnabled(true);
@@ -181,6 +206,29 @@ void Client::on_load_image_button_clicked()
     }
     QImage opnImage(opnFile);
     ui->suprema_fingerprint_img->setPixmap(QPixmap::fromImage(opnImage));
+
+    /* Zistovanie velkosti obrazku */
+    QByteArray byteCount;
+    QByteArray imgWidth, imgHeight;
+
+    QDataStream dataStream1(&byteCount, QIODevice::WriteOnly);
+    QDataStream dataStream2(&imgWidth, QIODevice::WriteOnly);
+    QDataStream dataStream3(&imgHeight, QIODevice::WriteOnly);
+
+    quint32 bc = opnImage.byteCount() + sizeof(int)*3;
+    quint32 iw = opnImage.width();
+    quint32 ih = opnImage.height();
+
+    qDebug() << bc << " " << iw << " " << ih;
+
+    dataStream1 << bc;
+    dataStream2 << iw;
+    dataStream3 << ih;
+
+    this->socket.write(byteCount);// pocet B
+    this->socket.write(imgWidth);// sirka
+    this->socket.write(imgHeight);// vyska
+
     this->socket.write((const char*)opnImage.bits(),sizeof(unsigned char)*opnImage.width()*opnImage.height());
     ui->save_image_button->setEnabled(true);
 }
