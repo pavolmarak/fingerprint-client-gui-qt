@@ -81,31 +81,36 @@ void Client::on_suprema_scan_button_clicked()
     int width, height;
     unsigned char* img_data = this->scannerCapture(width,height);
     if(img_data == nullptr){
-        qDebug() << "Chyba snimaca";
+        qDebug() << "Scanner error.";
+        ui->suprema_log->append("Scanner error.");
         return;
     }
     QImage fing_img(img_data,width,height,QImage::Format_Grayscale8);
     ui->suprema_fingerprint_img->setPixmap(QPixmap::fromImage(fing_img));
 
-    /* Zistovanie velkosti obrazku */
     QByteArray byteCount;
     QByteArray imgWidth, imgHeight;
+    QByteArray serverWindowID;
 
     QDataStream dataStream1(&byteCount, QIODevice::WriteOnly);
     QDataStream dataStream2(&imgWidth, QIODevice::WriteOnly);
     QDataStream dataStream3(&imgHeight, QIODevice::WriteOnly);
+    QDataStream dataStream4(&serverWindowID, QIODevice::WriteOnly);
 
-    quint32 bc = 153600+12;
-    quint32 iw = 320;
-    quint32 ih = 480;
+    quint32 bc = SUPREMA_IMG_SIZE+CONTROL_DATA_SIZE;
+    quint32 iw = SUPREMA_IMG_WIDTH;
+    quint32 ih = SUPREMA_IMG_HEIGHT;
+    quint32 swid = 1;
 
     dataStream1 << bc;
     dataStream2 << iw;
     dataStream3 << ih;
+    dataStream4 << swid;
 
-    this->socket.write(byteCount);// pocet B
-    this->socket.write(imgWidth);// sirka
-    this->socket.write(imgHeight);// vyska
+    this->socket.write(byteCount); // number of bytes
+    this->socket.write(imgWidth); // image width
+    this->socket.write(imgHeight); // image height
+    this->socket.write(serverWindowID); // server window ID
 
     this->socket.write((const char*)img_data,sizeof(unsigned char)*width*height);
     free(img_data);
@@ -121,8 +126,38 @@ void Client::on_suprema_scan_button2_clicked()
     }
     int width, height;
     unsigned char* img_data = this->scannerCapture(width,height);
+    if(img_data == nullptr){
+        qDebug() << "Scanner error.";
+        ui->suprema_log->append("Scanner error.");
+        return;
+    }
     QImage fing_img(img_data,width,height,QImage::Format_Grayscale8);
     ui->suprema_fingerprint_img2->setPixmap(QPixmap::fromImage(fing_img));
+
+    QByteArray byteCount;
+    QByteArray imgWidth, imgHeight;
+    QByteArray serverWindowID;
+
+    QDataStream dataStream1(&byteCount, QIODevice::WriteOnly);
+    QDataStream dataStream2(&imgWidth, QIODevice::WriteOnly);
+    QDataStream dataStream3(&imgHeight, QIODevice::WriteOnly);
+    QDataStream dataStream4(&serverWindowID, QIODevice::WriteOnly);
+
+    quint32 bc = SUPREMA_IMG_SIZE+CONTROL_DATA_SIZE;
+    quint32 iw = SUPREMA_IMG_WIDTH;
+    quint32 ih = SUPREMA_IMG_HEIGHT;
+    quint32 swid = 2;
+
+    dataStream1 << bc;
+    dataStream2 << iw;
+    dataStream3 << ih;
+    dataStream4 << swid;
+
+    this->socket.write(byteCount); // number of bytes
+    this->socket.write(imgWidth); // image width
+    this->socket.write(imgHeight); // image height
+    this->socket.write(serverWindowID); // server window ID
+
     this->socket.write((const char*)img_data,sizeof(unsigned char)*width*height);
     free(img_data);
     ui->save_image_button2->setEnabled(true);
@@ -207,27 +242,29 @@ void Client::on_load_image_button_clicked()
     QImage opnImage(opnFile);
     ui->suprema_fingerprint_img->setPixmap(QPixmap::fromImage(opnImage));
 
-    /* Zistovanie velkosti obrazku */
     QByteArray byteCount;
     QByteArray imgWidth, imgHeight;
+    QByteArray serverWindowID;
 
     QDataStream dataStream1(&byteCount, QIODevice::WriteOnly);
     QDataStream dataStream2(&imgWidth, QIODevice::WriteOnly);
     QDataStream dataStream3(&imgHeight, QIODevice::WriteOnly);
+    QDataStream dataStream4(&serverWindowID, QIODevice::WriteOnly);
 
-    quint32 bc = opnImage.byteCount() + sizeof(int)*3;
+    quint32 bc = opnImage.byteCount()+CONTROL_DATA_SIZE;
     quint32 iw = opnImage.width();
     quint32 ih = opnImage.height();
-
-    qDebug() << bc << " " << iw << " " << ih;
+    quint32 swid = 1;
 
     dataStream1 << bc;
     dataStream2 << iw;
     dataStream3 << ih;
+    dataStream4 << swid;
 
-    this->socket.write(byteCount);// pocet B
-    this->socket.write(imgWidth);// sirka
-    this->socket.write(imgHeight);// vyska
+    this->socket.write(byteCount); // number of bytes
+    this->socket.write(imgWidth); // image width
+    this->socket.write(imgHeight); // image height
+    this->socket.write(serverWindowID); // server window ID
 
     this->socket.write((const char*)opnImage.bits(),sizeof(unsigned char)*opnImage.width()*opnImage.height());
     ui->save_image_button->setEnabled(true);
@@ -247,7 +284,31 @@ void Client::on_load_image_button2_clicked()
     }
     QImage opnImage(opnFile);
     ui->suprema_fingerprint_img2->setPixmap(QPixmap::fromImage(opnImage));
-    this->socket.write("100");
+
+    QByteArray byteCount;
+    QByteArray imgWidth, imgHeight;
+    QByteArray serverWindowID;
+
+    QDataStream dataStream1(&byteCount, QIODevice::WriteOnly);
+    QDataStream dataStream2(&imgWidth, QIODevice::WriteOnly);
+    QDataStream dataStream3(&imgHeight, QIODevice::WriteOnly);
+    QDataStream dataStream4(&serverWindowID, QIODevice::WriteOnly);
+
+    quint32 bc = opnImage.byteCount()+CONTROL_DATA_SIZE;
+    quint32 iw = opnImage.width();
+    quint32 ih = opnImage.height();
+    quint32 swid = 2;
+
+    dataStream1 << bc;
+    dataStream2 << iw;
+    dataStream3 << ih;
+    dataStream4 << swid;
+
+    this->socket.write(byteCount); // number of bytes
+    this->socket.write(imgWidth); // image width
+    this->socket.write(imgHeight); // image height
+    this->socket.write(serverWindowID); // server window ID
+
     this->socket.write((const char*)opnImage.bits(),sizeof(unsigned char)*opnImage.width()*opnImage.height());
     ui->save_image_button2->setEnabled(true);
 }

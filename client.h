@@ -16,6 +16,16 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
 
+// Suprema BioMini Slim image size in bytes
+#define SUPREMA_IMG_SIZE 153600
+
+// Suprema BioMini Slim image size in pixels
+#define SUPREMA_IMG_WIDTH 320
+#define SUPREMA_IMG_HEIGHT 480
+
+// control data size in bytes
+#define CONTROL_DATA_SIZE 16
+
 namespace Ui {
 class Client;
 }
