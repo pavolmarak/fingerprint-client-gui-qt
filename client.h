@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QDateTime>
+#include <QPushButton>
 
 #include "UFScanner.h"
 #include "opencv2/world.hpp"
@@ -44,6 +45,14 @@ private slots:
     void on_suprema_scan_button_clicked();
 
     void on_save_image_button_clicked();
+
+    void on_suprema_scan_button2_clicked();
+
+    void on_save_image_button2_clicked();
+
+    void on_load_image_button_clicked();
+
+    void on_load_image_button2_clicked();
 
 private:
     Ui::Client *ui;

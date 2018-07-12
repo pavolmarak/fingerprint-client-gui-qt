@@ -84,11 +84,34 @@ void Client::on_suprema_scan_button_clicked()
     ui->suprema_fingerprint_img->setPixmap(QPixmap::fromImage(fing_img));
     this->socket.write((const char*)img_data,sizeof(unsigned char)*width*height);
     free(img_data);
+    ui->save_image_button->setEnabled(true);
+}
+
+void Client::on_suprema_scan_button2_clicked()
+{
+    if(this->socket.state()!=QTcpSocket::ConnectedState){
+        qWarning() << "No TCP connection to server.";
+        ui->suprema_log->append("No TCP connection to server.");
+        return;
+    }
+    int width, height;
+    unsigned char* img_data = this->scannerCapture(width,height);
+    QImage fing_img(img_data,width,height,QImage::Format_Grayscale8);
+    ui->suprema_fingerprint_img2->setPixmap(QPixmap::fromImage(fing_img));
+    this->socket.write((const char*)img_data,sizeof(unsigned char)*width*height);
+    free(img_data);
+    ui->save_image_button2->setEnabled(true);
+
 }
 
 void Client::on_save_image_button_clicked()
 {
     qDebug() << ui->suprema_fingerprint_img->grab().save(QFileDialog::getSaveFileName(nullptr,"Save image as"));
+}
+
+void Client::on_save_image_button2_clicked()
+{
+    qDebug() << ui->suprema_fingerprint_img2->grab().save(QFileDialog::getSaveFileName(nullptr,"Save image as"));
 }
 
 bool Client::scannerInit(HUFScanner& hscanner)
@@ -142,4 +165,41 @@ unsigned char* Client::scannerCapture(int& width, int& height)
     }
     free(errStr);
     return nullptr;
+}
+
+void Client::on_load_image_button_clicked()
+{
+    if(this->socket.state()!=QTcpSocket::ConnectedState){
+        qWarning() << "No TCP connection to server.";
+        ui->suprema_log->append("No TCP connection to server.");
+        return;
+    }
+    QString opnFile = QFileDialog::getOpenFileName(nullptr,"Please select a fingerprint image");
+    if(opnFile==""){
+        qDebug() << "No file selected.";
+        return;
+    }
+    QImage opnImage(opnFile);
+    ui->suprema_fingerprint_img->setPixmap(QPixmap::fromImage(opnImage));
+    this->socket.write((const char*)opnImage.bits(),sizeof(unsigned char)*opnImage.width()*opnImage.height());
+    ui->save_image_button->setEnabled(true);
+}
+
+void Client::on_load_image_button2_clicked()
+{
+    if(this->socket.state()!=QTcpSocket::ConnectedState){
+        qWarning() << "No TCP connection to server.";
+        ui->suprema_log->append("No TCP connection to server.");
+        return;
+    }
+    QString opnFile = QFileDialog::getOpenFileName(nullptr,"Please select a fingerprint image");
+    if(opnFile==""){
+        qDebug() << "No file selected.";
+        return;
+    }
+    QImage opnImage(opnFile);
+    ui->suprema_fingerprint_img2->setPixmap(QPixmap::fromImage(opnImage));
+    this->socket.write("100");
+    this->socket.write((const char*)opnImage.bits(),sizeof(unsigned char)*opnImage.width()*opnImage.height());
+    ui->save_image_button2->setEnabled(true);
 }
