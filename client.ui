@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1431</width>
-    <height>693</height>
+    <width>1400</width>
+    <height>712</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -344,6 +344,16 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_6">
              <item>
+              <widget class="QLabel" name="left_image_path">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QLabel" name="suprema_fingerprint_img">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -367,6 +377,19 @@
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
              </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -434,6 +457,13 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_8">
              <item>
+              <widget class="QLabel" name="right_image_path">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QLabel" name="suprema_fingerprint_img2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -457,6 +487,19 @@
                 <string/>
                </property>
               </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
              </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_11">
@@ -572,8 +615,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1431</width>
-     <height>30</height>
+     <width>1400</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>

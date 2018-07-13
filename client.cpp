@@ -8,7 +8,7 @@ Client::Client(QWidget *parent) :
     ui->setupUi(this);
     if(this->scannerInit(this->hscanner)==false){
         qDebug() << "Error during scanner init.";
-        exit(-1);
+        //exit(-1);
     }
     QObject::connect(&(this->socket), SIGNAL(connected()), this, SLOT(connectedSlot()));
     QObject::connect(&(this->socket), SIGNAL(readyRead()), this, SLOT(readSlot()));
@@ -241,6 +241,7 @@ void Client::on_load_image_button_clicked()
     }
     QImage opnImage(opnFile);
     ui->suprema_fingerprint_img->setPixmap(QPixmap::fromImage(opnImage));
+    ui->left_image_path->setText(opnFile);
 
     QByteArray byteCount;
     QByteArray imgWidth, imgHeight;
@@ -284,6 +285,7 @@ void Client::on_load_image_button2_clicked()
     }
     QImage opnImage(opnFile);
     ui->suprema_fingerprint_img2->setPixmap(QPixmap::fromImage(opnImage));
+    ui->right_image_path->setText(opnFile);
 
     QByteArray byteCount;
     QByteArray imgWidth, imgHeight;
