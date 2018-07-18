@@ -3,7 +3,7 @@ This repository houses source code for an experimental biometric client app comm
 
 From biometric point of view, the app supports scanning fingerprints (now only Suprema BioMini Slim is supported) and transferring them to the authentication server which then performs fingerprint recognition based on the open-source library with codename DBOX, developed by László Kádek and Pavol Marak in 2018. 
 
-The aforementioned DBOX library is composed of three main components (standalone shared libraries, available as GitHub repos):
+The aforementioned DBOX library is composed of 3 main components (standalone shared libraries, available as GitHub repos):
  * image preprocessing ([here](https://github.com/pavolmarak/Preprocessing))
  * feature extraction ([here](https://github.com/pavolmarak/Extraction))
  * feature matching ([here](https://github.com/pavolmarak/Matcher))
